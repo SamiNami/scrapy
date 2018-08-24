@@ -10,7 +10,10 @@ def product_info(response, value):
 class BooksSpider(Spider):
     name = 'books'
     allowed_domains = ['books.toscrape.com']
-    start_urls = ['http://books.toscrape.com']
+
+    def __init__(self, category):
+        self.start_urls = [category] 
+    # start_urls = ['http://books.toscrape.com']
 
 
     def parse(self, response):
@@ -21,7 +24,7 @@ class BooksSpider(Spider):
 
         # process next page
         next_page_url = response.xpath('//a[text()="next"]/@href').extract_first()
-        absolute_next_page_url =response.urljoin(next_page_url)
+        absolute_next_page_url = response.urljoin(next_page_url)
         yield Request(absolute_next_page_url)
 
     def parse_book(self, response):
