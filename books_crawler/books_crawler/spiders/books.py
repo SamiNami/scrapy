@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import os, glob
 from scrapy.spiders import Spider
 from scrapy.http import Request
 
@@ -12,7 +12,7 @@ class BooksSpider(Spider):
     allowed_domains = ['books.toscrape.com']
 
     def __init__(self, category):
-        self.start_urls = [category] 
+        self.start_urls = [category]
     # start_urls = ['http://books.toscrape.com']
 
 
@@ -62,6 +62,10 @@ class BooksSpider(Spider):
             "availability": availability,
             "number_of_reviews": number_of_reviews,
         }
+
+    def close(response):
+        csv_file = max(glob.iglob('*.csv'), key=os.path.getctime)
+        os.rename(csv_file, "kappa.csv")
 #
 # class BooksSpider(Spider):
 #     name = 'books'
